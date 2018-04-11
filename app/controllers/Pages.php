@@ -5,7 +5,8 @@
 
         public function index() {
             $data = [
-                'title' => 'Share Posts'
+                'title' => 'Share Posts',
+                'description' => 'simple social network built on frlmvc framework'
             ];
 
             // pass variable from above to view
@@ -14,7 +15,8 @@
 
         public function about() {
             $data = [
-                'title' => 'About'
+                'title' => 'About',
+                'description' => 'App to share posts with other users'
             ];
 
             $this->view('pages/about', $data);
