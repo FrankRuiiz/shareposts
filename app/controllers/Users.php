@@ -134,7 +134,7 @@
 
                     if ($loggedInUser) {
                         // Create session
-                        die('SUCCESS');
+                        $this->createUserSession($loggedInUser);
                     } else {
                         $data['password_err'] = 'Password incorrect';
                         $this->view('users/login', $data);
@@ -159,5 +159,23 @@
             }
         }
 
+        public function createUserSession($user) {
+            $_SESSION['user_id'] = $user->id;
+            $_SESSION['user_email'] = $user->email;
+            $_SESSION['user_name'] = $user->name;
+            redirect('pages/index');
+        }
+
+        public function logout() {
+            unset($_SESSIOn['user_id']);
+            unset($_SESSIOn['user_email']);
+            unset($_SESSIOn['user_name']);
+            session_destroy();
+            redirect('users/login');
+        }
+
+        public function isLoggedIn() {
+            return isset($_SESSION['user_id']) ? true : false; 
+        }
 
     }
