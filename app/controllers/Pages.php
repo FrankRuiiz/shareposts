@@ -4,6 +4,11 @@
         } 
 
         public function index() {
+            // If user is logged in, redirect to posts index
+            if (isLoggedIn()) {
+                redirect('posts');
+            }
+
             $data = [
                 'title' => 'Share Posts',
                 'description' => 'simple social network built on frlmvc framework'
