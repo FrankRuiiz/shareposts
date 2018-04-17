@@ -18,10 +18,47 @@
         }
 
         public function add() {
-            $data = [
-                'title' => '',
-                'body'  => ''
-            ];
-            $this->view('posts/add', $data);
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                // Sanatize post
+                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+                $data = [
+                    'title' => trim($_POST['title']),
+                    'body' => trim($_POST['body']),
+                    'user_id' => $_SESSION['user_id'],
+                    'title_err' => '',
+                    'body_err' => ''
+                ];
+
+                // Validate data
+                if (empty($data['title'])) {
+                    $data['title_err'] = 'Please enter a title';
+                }
+                if (empty($data['body'])) {
+                    $data['body_err'] = 'Please enter body text';
+                }
+
+                // Makre sure no errors
+                if (empty($data['title_err']) && empty($data['body_err'])) {
+                    // Validated
+                    if ($this->postModel->addPost($data)) {
+                        flash('post_message', 'Post Added');
+                        redirect('posts');
+                    } else {
+                        die('someting went wrong');
+                    }
+                } else {
+                    // Load posts/add with errors
+                    $this->view('posts/add', $data);
+                }
+
+
+            } else {
+                $data = [
+                    'title' => '',
+                    'body'  => ''
+                ];
+                $this->view('posts/add', $data);
+            }
         }
     }
